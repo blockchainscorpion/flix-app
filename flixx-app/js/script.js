@@ -4,16 +4,26 @@ const global = {
 
 // Initialize App
 
+
+
 function init() {
   switch (global.currentPage) {
-    case '/':
+    case '/flixx-app/index.html':
       console.log('Home Page');
       break;
-    case '/shows.html':
+    case '/flixx-app/shows.html':
       console.log('Shows Page');
       break;
-    case '/movie-details.html':
-      console.log('Details Page');
+    case 'flixx-app/movie-details.html':
+      alert('Movie Details Page');
+      break;
+    case '/flixx-app/tv-details.html':
+      alert('TV Details Page');
+      break;
+
+    default:
+      'Nada';
+      console.log("nada");
       break;
   }
 }
