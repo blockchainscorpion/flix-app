@@ -15,20 +15,20 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/spinner.css" />
     <script src="lib/swiper.js"></script>
-    <script src="js/script.js" defer></script>
+    <script src="./js/script.js" defer></script>
     <title>Flixx</title>
   </head>
   <body>
     <header class="main-header">
       <div class="container">
-        <div class="logo"><a href="/">FLIXX</a></div>
+        <div class="logo"><a href="./index.html">FLIXX</a></div>
         <nav>
           <ul>
             <li>
-              <a class="nav-link" href="/">Movies</a>
+              <a class="nav-link" href="./index.html">Movies</a>
             </li>
             <li>
-              <a class="nav-link" href="/shows.html">TV Shows</a>
+              <a class="nav-link" href="./shows.html">TV Shows</a>
             </li>
           </ul>
         </nav>
@@ -59,9 +59,9 @@
         <form action="/search.html" class="search-form">
           <!-- movies and shows radio box -->
           <div class="search-radio">
-            <input type="radio" id="movie" name="type" value="movie" checked />
+            <input title="movies" type="radio" id="movie" name="type" value="movie" checked />
             <label for="movies">Movies</label>
-            <input type="radio" id="tv" name="type" value="tv" />
+            <input title="tv" type="radio" id="tv" name="type" value="tv" />
             <label for="shows">TV Shows</label>
           </div>
           <div class="search-flex">
@@ -71,7 +71,7 @@
               id="search-term"
               placeholder="Enter search term"
             />
-            <button class="btn" type="submit">
+            <button class="btn" type="submit"> BPX
               <i class="fas fa-search"></i>
             </button>
           </div>
@@ -211,14 +211,14 @@
       <div class="container">
         <div class="logo"><span>FLIXX</span></div>
         <div class="social-links">
-          <a href="https://www.facebook.com" target="_blank"
-            ><i class="fab fa-facebook-f"></i
+          <a rel="noopener noreferrer" href="https://www.facebook.com" target="_blank"
+            >FB<i class="fab fa-facebook-f"></i
           ></a>
-          <a href="https://www.twitter.com" target="_blank"
-            ><i class="fab fa-twitter"></i
+          <a rel="noopener noreferrer" href="https://www.twitter.com" target="_blank"
+            >TWT<i class="fab fa-twitter"></i
           ></a>
-          <a href="https://www.instagram.com" target="_blank"
-            ><i class="fab fa-instagram"></i
+          <a rel="noopener noreferrer" href="https://www.instagram.com" target="_blank"
+            > IG<i class="fab fa-instagram"></i
           ></a>
         </div>
       </div>

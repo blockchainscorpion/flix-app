@@ -1,6 +1,23 @@
-const nowPlayingText = document.getElementById('now-playingu');
+const global = {
+  currentPage: window.location.pathname,
+};
 
-nowPlayingText.addEventListener('mouseover', () => {
-  nowPlayingText.style.color = 'red';
-  console.log('mouse Is Over Now Playing');
-});
+// Initialize App
+
+function init() {
+  switch (global.currentPage) {
+    case '/':
+      console.log('Home Page');
+      break;
+    case '/shows.html':
+      console.log('Shows Page');
+      break;
+    case '/movie-details.html':
+      console.log('Details Page');
+      break;
+  }
+}
+
+// init();
+
+document.addEventListener('DOMContentLoaded', init);
