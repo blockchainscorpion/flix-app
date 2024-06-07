@@ -2,10 +2,19 @@ const global = {
   currentPage: window.location.pathname,
 };
 
-// Initialize App
+// Highlight active link
+function highlightActiveLink() {
+  const links = document.querySelectorAll('.nav-link');
+  links.forEach((link) => {
+    if (link.getAttribute('href') === global.currentPage) {
+      link.classList.add('active');
+    }
+  });
+} // As you can see, sometimes a foreach loop is simply easier than trying to attach an event listener to each element in an array.
 
+highlightActiveLink();
 
-
+// Initialize App (runs on every page & pageload)
 function init() {
   switch (global.currentPage) {
     case '/flixx-app/index.html':
@@ -23,9 +32,12 @@ function init() {
 
     default:
       'Nada';
-      console.log("nada");
+      console.log('nada');
       break;
   }
+
+  // highlight active link
+  highlightActiveLink();
 }
 
 // init();
