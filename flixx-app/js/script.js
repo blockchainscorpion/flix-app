@@ -52,7 +52,11 @@ async function displayMovieData() {
 // Function to get Movie data
 async function displayshowShowData() {
   const { results } = await getAPIData('tv/popular');
-  // console.log(results); // The forEach replaces this
+
+  // console.log(results);
+  /*  The forEach replaces the console.log(results) - it can be helpful to keep 
+  this active to see what it's doing, and to see the data structure until i'm happy.  */
+
   results.forEach((show) => {
     const div = document.createElement('div');
 
@@ -64,19 +68,21 @@ async function displayshowShowData() {
                 ? `<img
               src="https://image.tmdb.org/t/p/w500${show.poster_path}"
               class="card-img-top"
-              alt="${show.title}"
+              alt="${show.name}"
             />`
                 : `<img
               src="images/no-image.jpg"
               class="card-img-top"
-              alt="${show.title}"
+              alt="${show.name}"
             />`
             }
           </a>
           <div class="card-body">
-            <h5 class="card-title">${show.title}</h5>
+            <h5 class="card-title">${show.name}</h5>
             <p class="card-text">
-              <small class="text-muted">Aired: ${show.aired_}</small>
+              <small class="text-muted">First Aired: ${
+                show.first_air_date
+              }</small>
             </p>
           </div>`;
 
@@ -123,11 +129,9 @@ function init() {
   switch (global.currentPage) {
     case '/flixx-app/index.html':
       displayMovieData(); // Display Movie data
-      console.log('Home Page');
       break;
     case '/flixx-app/shows.html':
       displayshowShowData(); // Display show Show data
-      console.log('Shows Page');
       break;
     case 'flixx-app/movie-details.html':
       alert('Movie Details Page');
