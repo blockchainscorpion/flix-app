@@ -50,33 +50,33 @@ async function displayMovieData() {
 }
 
 // Function to get Movie data
-async function displayTVShowData() {
+async function displayshowShowData() {
   const { results } = await getAPIData('tv/popular');
   // console.log(results); // The forEach replaces this
-  results.forEach((tv) => {
+  results.forEach((show) => {
     const div = document.createElement('div');
 
     div.classList.add('card');
 
-    div.innerHTML = `<a href="tv-details.html?id=${tv.id}">
+    div.innerHTML = `<a href="show-details.html?id=${show.id}">
             ${
-              tv.poster_path
+              show.poster_path
                 ? `<img
-              src="https://image.tmdb.org/t/p/w500${tv.poster_path}"
+              src="https://image.tmdb.org/t/p/w500${show.poster_path}"
               class="card-img-top"
-              alt="${tv.title}"
+              alt="${show.title}"
             />`
                 : `<img
               src="images/no-image.jpg"
               class="card-img-top"
-              alt="${tv.title}"
+              alt="${show.title}"
             />`
             }
           </a>
           <div class="card-body">
-            <h5 class="card-title">${tv.title}</h5>
+            <h5 class="card-title">${show.title}</h5>
             <p class="card-text">
-              <small class="text-muted">Aired: ${tv.aired_}</small>
+              <small class="text-muted">Aired: ${show.aired_}</small>
             </p>
           </div>`;
 
@@ -96,9 +96,26 @@ async function getAPIData(endpoint) {
   const response = await fetch(
     `${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`
   ); /* This could alternatively be placed above with the API URL variable, but it functions better here. */
+
+  if (!response.ok) {
+    alert('Error: ' + response.statusText);
+    showSpinner();
+  } else {
+    hideSpinner();
+  }
   const data = await response.json();
 
   return data;
+}
+
+// Show the spinner
+function showSpinner() {
+  document.querySelector('.spinner').classList.add('show');
+}
+
+// Hide Spinner
+function hideSpinner() {
+  document.querySelector('.spinner').classList.add('hide');
 }
 
 // Initialize App (runs on every page & pageload)
@@ -109,14 +126,14 @@ function init() {
       console.log('Home Page');
       break;
     case '/flixx-app/shows.html':
-      displayTVShowData(); // Display TV Show data
+      displayshowShowData(); // Display show Show data
       console.log('Shows Page');
       break;
     case 'flixx-app/movie-details.html':
       alert('Movie Details Page');
       break;
-    case '/flixx-app/tv-details.html':
-      alert('TV Details Page');
+    case '/flixx-app/show-details.html':
+      alert('show Details Page');
       break;
 
     default:
