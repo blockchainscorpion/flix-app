@@ -1,2 +1,26 @@
 The starter files include the theme (html/css) only. We will add the JavaScript throughout the videos.
 
+This:
+${movie.genres.map((genre) => `<li>${genre.name}</li>`).join("")}
+
+Is a replacement for this:
+<li>${movie.genres[0].name}</li>
+<li>${movie.genres[1].name}</li>
+<li>${movie.genres[2].name}</li>
+
+It avoids having to wrap the whole div in a forEachloop. And it looks neater in the case of below.
+
+Another example:
+This:
+<div class="list-group">
+${movie.production_companies.map((company) => `<li>${company.name}</li>`).join('')}</div>
+</div>
+
+↑ I could also use <span></span> instead of <li></li>
+
+Replaces this:
+<div class="list-group">
+${movie.production_companies[0].name}, 
+${movie.production_companies[1].name}, 
+${movie.production_companies[2].name}
+</div>
