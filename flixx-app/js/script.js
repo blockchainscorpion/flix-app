@@ -59,6 +59,9 @@ async function displayMovieDetails() {
 
   const movie = await getAPIData(`movie/${movieID}`);
 
+  // Background Image overlay
+  displayBackgroundImage('movie', movie.backdrop_path);
+
   const div = document.createElement('div');
 
   // div.classList.add('details-top');
@@ -121,6 +124,78 @@ async function displayMovieDetails() {
   console.log(movie);
 }
 
+// Function to display tv details page
+async function displayShowDetails() {
+  const showID = window.location.search.split('=')[1];
+  // console.log(showID); // returns ?id=653346 - use the split method to turn this into an array, and split it up in whatever way I need.
+  // Above I added ".split("=")" - this means i want the split to occur at the equal sign, returning this: [?id, 653346].
+  // The [1] is the second element in the array, which is the id number. So, it returns only the id number.
+  // Get & display the movie data for the selected show ↓
+
+  const show = await getAPIData(`show/${showID}`);
+
+  const div = document.createElement('div');
+
+  // div.classList.add('details-top');
+
+  div.innerHTML = `
+            <div class="details-top">
+          <div>
+            ${
+              show.poster_path
+                ? `<img
+              src="https://image.tmdb.org/t/p/w500${show.poster_path}"
+              class="card-img-top"
+              alt="${show.title}"
+            />`
+                : `<img
+              src="images/no-image.jpg"
+              class="card-img-top"
+              alt="${show.title}"
+            />`
+            }
+          </div>
+          <div>
+            <h2>${show.name}</h2>
+            <p>
+              <i class="fas fa-star text-primary"></i>
+              ${tv.vote_average.toFixed(1)} / 10
+            </p>
+            <p class="text-muted">Release Date: ${show.aired_date}</p>
+            <p>
+              ${show.overview}
+            </p>
+            <h5>Genres</h5>
+            <ul class="list-group">
+              
+              ${movie.genres.map((genre) => `<li>${genre.name}</li>`).join('')}
+            </ul>
+            <a href="#" target="_blank" class="btn">Visit Movie Homepage</a>
+          </div>
+        </div>
+        <div class="details-bottom">
+          <h2>Movie Info</h2>
+          <ul>
+            <li><span class="text-secondary">Budget:</span> ${addCommas(
+              show.budget
+            )}</li>
+            <li><span class="text-secondary">Revenue:</span> $${addCommas(
+              show.revenue
+            )}</li>
+            <li><span class="text-secondary">Runtime:</span> ${
+              show.runtime
+            } minutes</li>
+            <li><span class="text-secondary">Status:</span> ${show.status}</li>
+          </ul>
+          <h4>Production Companies</h4>
+          <div class="list-group">${movie.production_companies
+            .map((company) => `<span>${company.name}</span>`)
+            .join('')}</div>
+        </div>`;
+  document.querySelector('#movie-details').appendChild(div);
+  console.log(movie);
+}
+
 // Function to display show data on homepage
 async function displayshowShowData() {
   const { results } = await getAPIData('tv/popular');
@@ -160,6 +235,31 @@ async function displayshowShowData() {
 
     document.getElementById('popular-shows').appendChild(div);
   });
+}
+
+// Display backdrop image on movie-details page
+async function displayBackgroundImage(type, backgroundPath) {
+  // Creating and calling the overlay image
+  const overlayDiv = document.createElement('div');
+  overlayDiv.style.backgroundImage = `url(https://image.tmdb.org/t/p/w500${backgroundPath})`; // The background path could also be "backdrop_path", but i already passed in the parameter that I want to use.
+  // Overlay styling
+  overlayDiv.style.backgroundSize = 'cover';
+  overlayDiv.style.backgroundPosition = 'center';
+  overlayDiv.style.backgroundRepeat = 'no-repeat';
+  overlayDiv.style.height = '100vh';
+  overlayDiv.style.width = '100vw';
+  overlayDiv.style.position = 'absolute';
+  overlayDiv.style.top = '0';
+  overlayDiv.style.left = '0';
+  overlayDiv.style.zIndex = '-1';
+  overlayDiv.style.opacity = '0.2';
+
+  // Checking the type, to know which page we are on.
+  if (type === 'movie') {
+    document.querySelector('#movie-details').appendChild(overlayDiv);
+  } else {
+    document.querySelector('#tv-details').appendChild(overlayDiv);
+  }
 }
 
 // Function to fetch API data
@@ -216,8 +316,8 @@ function init() {
       console.log('Movie Details Page');
       displayMovieDetails();
       break;
-    case '/flixx-app/show-details.html':
-      alert('show Details Page');
+    case '/flixx-app/tv-details.html':
+      displayShowDetails();
       break;
 
     default:
