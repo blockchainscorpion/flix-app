@@ -124,15 +124,18 @@ async function displayMovieDetails() {
   console.log(movie);
 }
 
-// Function to display tv details page
+// Function to display show details page
 async function displayShowDetails() {
   const showID = window.location.search.split('=')[1];
-  // console.log(showID); // returns ?id=653346 - use the split method to turn this into an array, and split it up in whatever way I need.
+  // console.log(movieID); // returns ?id=653346 - use the split method to turn this into an array, and split it up in whatever way I need.
   // Above I added ".split("=")" - this means i want the split to occur at the equal sign, returning this: [?id, 653346].
   // The [1] is the second element in the array, which is the id number. So, it returns only the id number.
-  // Get & display the movie data for the selected show ↓
+  // Get & display the movie data for the selected movie ↓
 
-  const show = await getAPIData(`show/${showID}`);
+  const show = await getAPIData(`tv/${showID}`);
+
+  // Background Image overlay
+  displayBackgroundImage('tv', show.backdrop_path);
 
   const div = document.createElement('div');
 
@@ -142,16 +145,16 @@ async function displayShowDetails() {
             <div class="details-top">
           <div>
             ${
-              show.poster_path
+              show.backdrop_path
                 ? `<img
-              src="https://image.tmdb.org/t/p/w500${show.poster_path}"
+              src="https://image.tmdb.org/t/p/w500${show.backdrop_path}"
               class="card-img-top"
-              alt="${show.title}"
+              alt="${show.name}"
             />`
                 : `<img
               src="images/no-image.jpg"
               class="card-img-top"
-              alt="${show.title}"
+              alt="${show.name}"
             />`
             }
           </div>
@@ -159,45 +162,47 @@ async function displayShowDetails() {
             <h2>${show.name}</h2>
             <p>
               <i class="fas fa-star text-primary"></i>
-              ${tv.vote_average.toFixed(1)} / 10
+              ${show.vote_average.toFixed(1)} / 10
             </p>
-            <p class="text-muted">Release Date: ${show.aired_date}</p>
+            <p class="text-muted">Release Date: ${show.first_air_date}</p>
             <p>
               ${show.overview}
             </p>
             <h5>Genres</h5>
             <ul class="list-group">
               
-              ${movie.genres.map((genre) => `<li>${genre.name}</li>`).join('')}
+              ${show.genres.map((genre) => `<li>${genre.name}</li>`).join('')}
             </ul>
-            <a href="#" target="_blank" class="btn">Visit Movie Homepage</a>
+            <a href="/flixx-app/index.html" target="_blank" class="btn">Visit Movie Homepage</a>
           </div>
         </div>
         <div class="details-bottom">
           <h2>Movie Info</h2>
           <ul>
-            <li><span class="text-secondary">Budget:</span> ${addCommas(
-              show.budget
-            )}</li>
-            <li><span class="text-secondary">Revenue:</span> $${addCommas(
-              show.revenue
-            )}</li>
-            <li><span class="text-secondary">Runtime:</span> ${
-              show.runtime
+            <li><span class="text-secondary">Number of episodes:</span> ${addCommas(
+              show.number_of_episodes
+            )}
+            </li>
+            <li><span class="text-secondary">Last Aired:</span>  ${
+              show.last_air_date
+            }
+            </li>
+            <li><span class="text-secondary">Episode Runtime:</span> ${
+              show.episode_run_time
             } minutes</li>
             <li><span class="text-secondary">Status:</span> ${show.status}</li>
           </ul>
-          <h4>Production Companies</h4>
-          <div class="list-group">${movie.production_companies
+          <h4>Production Countries</h4>
+          <div class="list-group">${show.production_countries
             .map((company) => `<span>${company.name}</span>`)
             .join('')}</div>
         </div>`;
-  document.querySelector('#movie-details').appendChild(div);
-  console.log(movie);
+  document.querySelector('#show-details').appendChild(div);
+  console.log(show);
 }
 
 // Function to display show data on homepage
-async function displayshowShowData() {
+async function displayShowData() {
   const { results } = await getAPIData('tv/popular');
 
   // console.log(results);
@@ -258,7 +263,7 @@ async function displayBackgroundImage(type, backgroundPath) {
   if (type === 'movie') {
     document.querySelector('#movie-details').appendChild(overlayDiv);
   } else {
-    document.querySelector('#tv-details').appendChild(overlayDiv);
+    document.querySelector('#show-details').appendChild(overlayDiv);
   }
 }
 
@@ -310,13 +315,13 @@ function init() {
       displayMovieData(); // Display Movie data
       break;
     case '/flixx-app/shows.html':
-      displayshowShowData(); // Display show Show data
+      displayShowData(); // Display show Show data
       break;
     case '/flixx-app/movie-details.html':
       console.log('Movie Details Page');
       displayMovieDetails();
       break;
-    case '/flixx-app/tv-details.html':
+    case '/flixx-app/show-details.html':
       displayShowDetails();
       break;
 
