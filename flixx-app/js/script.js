@@ -12,9 +12,6 @@ function highlightActiveLink() {
   });
 } // As you can see, sometimes a foreach loop is simply easier than trying to attach an event listener to each element in an array.
 
-// Activate link highlighting
-highlightActiveLink();
-
 // Function to display Movie data on homepage
 async function displayMovieData() {
   const { results } = await getAPIData('movie/popular');
@@ -50,10 +47,10 @@ async function displayMovieData() {
   });
 }
 
-// Homepage swiper display logic
+// Homepage (movies) swiper display logic
 async function displaySlider() {
   const { results } = await getAPIData('movie/now_playing'); // fetching the results from the api
-  console.log(results);
+  // console.log(results);
 
   // Loop through the results so I can add them to the DOM
   results.forEach((movie) => {
@@ -72,6 +69,40 @@ async function displaySlider() {
             </a>
             <h4 class="swiper-rating">
               <i class="fas fa-star text-secondary"></i> ${movie.vote_average.toFixed(
+                1
+              )} / 10
+            </h4>
+          `;
+
+    // Append the swiper to the relevant existing DOM element
+    document.querySelector('.swiper-wrapper').appendChild(swiperDiv);
+
+    initSwiper(); // Calling the function to initialize the swiper
+  });
+}
+
+// Homepage (shows) swiper display logic
+async function displaySliderForShows() {
+  const { results } = await getAPIData('tv/popular'); // fetching the results from the api
+  // console.log(results);
+
+  // Loop through the results so I can add them to the DOM
+  results.forEach((show) => {
+    //Create a new element for the swiper
+    const swiperDiv = document.createElement('div');
+
+    // Add the swiper class
+    swiperDiv.classList.add('swiper-slide');
+
+    // Define the swiper structure using template string: ``
+    swiperDiv.innerHTML = `
+            <a href="show-details.html?id=${show.id}">
+              <img src="https://image.tmdb.org/t/p/w500${
+                show.poster_path
+              }" alt="${show.name}" />
+            </a>
+            <h4 class="swiper-rating">
+              <i class="fas fa-star text-secondary"></i> ${show.vote_average.toFixed(
                 1
               )} / 10
             </h4>
@@ -364,7 +395,7 @@ function hideSpinner() {
   document.querySelector('.spinner').classList.add('hide');
 }
 
-console.log(global.currentPage); // Comment out when not needed
+/* console.log(global.currentPage); */ // Comment out when not needed
 
 //Function to add commas
 function addCommas(mum) {
@@ -379,10 +410,10 @@ function init() {
       displayMovieData(); // Display Movie data
       break;
     case '/flixx-app/shows.html':
+      displaySliderForShows();
       displayShowData(); // Display show Show data
       break;
     case '/flixx-app/movie-details.html':
-      console.log('Movie Details Page');
       displayMovieDetails();
       break;
     case '/flixx-app/show-details.html':
