@@ -43,6 +43,41 @@
       </div>
     </section>
 
+    <!-- Search Movies -->
+    <section class="search">
+      <div class="container">
+        <div id="alert"></div>
+        <form action="/search.html" class="search-form">
+          <!-- movies and shows radio box -->
+          <div class="search-radio">
+            <input
+              title="show"
+              type="radio"
+              id="show"
+              name="type"
+              value="show"
+              checked
+            />
+            <label for="tv">TV Shows</label>
+            <input title="tv" type="radio" id="tv" name="type" value="tv" />
+            <label for="movie">Movies</label>
+          </div>
+          <div class="search-flex">
+            <input
+              type="text"
+              name="search-term"
+              id="search-term"
+              placeholder="Enter search term"
+            />
+            <button class="btn" type="submit">
+              Search
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
     <!-- Popular TV Shows -->
     <section class="container">
       <h2>Popular TV Shows</h2>
@@ -70,7 +105,8 @@
             rel="noopener noreferrer"
             href="https://www.instagram.com"
             target="_blank"
-            ><i class="fab fa-instagram"></i
+          >
+            <i class="fab fa-instagram"></i
           ></a>
         </div>
       </div>

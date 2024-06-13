@@ -375,7 +375,7 @@ async function getAPIData(endpoint) {
   ); /* This could alternatively be placed above with the API URL variable, but it functions better here. */
 
   if (!response.ok) {
-    alert('Error: ' + response.statusText);
+    console.log('Error: ' + response.statusText);
     showSpinner();
   } else {
     hideSpinner();
