@@ -113,6 +113,13 @@ ul {
   color: var(--color-secondary);
 }
 
+/* Swiper */
+
+.swiper {
+  width: 600px;
+  height: 300px;
+}
+
 /* Grid */
 .grid {
   display: grid;

@@ -12,6 +12,7 @@ function highlightActiveLink() {
   });
 } // As you can see, sometimes a foreach loop is simply easier than trying to attach an event listener to each element in an array.
 
+// Activate link highlighting
 highlightActiveLink();
 
 // Function to display Movie data on homepage
@@ -49,21 +50,83 @@ async function displayMovieData() {
   });
 }
 
+// Homepage swiper display logic
+async function displaySlider() {
+  const { results } = await getAPIData('movie/now_playing'); // fetching the results from the api
+  console.log(results);
+
+  // Loop through the results so I can add them to the DOM
+  results.forEach((movie) => {
+    //Create a new element for the swiper
+    const swiperDiv = document.createElement('div');
+
+    // Add the swiper class
+    swiperDiv.classList.add('swiper-slide');
+
+    // Define the swiper structure using template string: ``
+    swiperDiv.innerHTML = `
+            <a href="movie-details.html?id=${movie.id}">
+              <img src="https://image.tmdb.org/t/p/w500${
+                movie.poster_path
+              }" alt="${movie.title}" />
+            </a>
+            <h4 class="swiper-rating">
+              <i class="fas fa-star text-secondary"></i> ${movie.vote_average.toFixed(
+                1
+              )} / 10
+            </h4>
+          `;
+
+    // Append the swiper to the relevant existing DOM element
+    document.querySelector('.swiper-wrapper').appendChild(swiperDiv);
+
+    initSwiper(); // Calling the function to initialize the swiper
+  });
+}
+
+//Initialize swiper see - https://swiperjs.com/get-started
+function initSwiper() {
+  const swiper = new Swiper('.swiper', {
+    slidesPerView: 1,
+    spaceBetween: 30,
+    freeMode: true,
+    loop: true,
+    autoplay: {
+      delay: 2000,
+      disableOnInteraction: false,
+    },
+    breakpoints: {
+      500: {
+        slidesPerView: 2,
+      },
+      700: {
+        slidesPerView: 3,
+      },
+      1200: {
+        slidesPerView: 4,
+      },
+    },
+  });
+}
+
 // Function to display movie details page
 async function displayMovieDetails() {
+  // Splitting any result that shows up from this function
   const movieID = window.location.search.split('=')[1];
+
   // console.log(movieID); // returns ?id=653346 - use the split method to turn this into an array, and split it up in whatever way I need.
   // Above I added ".split("=")" - this means i want the split to occur at the equal sign, returning this: [?id, 653346].
   // The [1] is the second element in the array, which is the id number. So, it returns only the id number.
-  // Get & display the movie data for the selected movie ↓
 
+  // Get & display the movie data for the selected movie ↓
   const movie = await getAPIData(`movie/${movieID}`);
 
-  // Background Image overlay
+  // Invoking ehr image overlay function
   displayBackgroundImage('movie', movie.backdrop_path);
 
   const div = document.createElement('div');
 
+  // I don't need to add the class if i plan to leave the class in the div content see 'div.innerHTML below'
   // div.classList.add('details-top');
 
   div.innerHTML = `
@@ -120,8 +183,9 @@ async function displayMovieDetails() {
             .map((company) => `<span>${company.name}</span>`)
             .join('')}</div>
         </div>`;
+
+  // Adding the movie details to the relevant DOM element.
   document.querySelector('#movie-details').appendChild(div);
-  console.log(movie);
 }
 
 // Function to display show details page
@@ -198,7 +262,6 @@ async function displayShowDetails() {
             .join('')}</div>
         </div>`;
   document.querySelector('#show-details').appendChild(div);
-  console.log(show);
 }
 
 // Function to display show data on homepage
@@ -312,6 +375,7 @@ function addCommas(mum) {
 function init() {
   switch (global.currentPage) {
     case '/flixx-app/index.html':
+      displaySlider();
       displayMovieData(); // Display Movie data
       break;
     case '/flixx-app/shows.html':
