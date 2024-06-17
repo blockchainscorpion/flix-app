@@ -24,3 +24,68 @@ ${movie.production_companies[0].name},
 ${movie.production_companies[1].name}, 
 ${movie.production_companies[2].name}
 </div>
+
+
+Api function before:
+async function getAPIData(endpoint) {
+  const response = await fetch(
+    `${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`
+  ); /* This could alternatively be placed above with the API URL variable, but it functions better here. */
+
+  const API_KEY = '0764feff15f2d9ad932c8dc7a24a2147';
+  const API_URL = `https://api.themoviedb.org/3/`;
+
+  if (!response.ok) {
+    console.log('Error: ' + response.statusText);
+    showSpinner();
+  } else {
+    hideSpinner();
+  }
+  const data = await response.json();
+
+  return data;
+}
+
+API function AFTER adding the API key and url to the global scope variable (not recommended for production builds):
+
+The API details were addded to global scope at the top of the page: (NOT RECOMMENDED)
+const global = {
+  currentPage: window.location.pathname,
+
+  search: {
+    term: '',
+    type: '',
+    page: 1,
+    totalPages: 1,
+  },
+
+  // In a production app, this key should not be stored in code. This is for demonstration purposes only.
+  // Register your free key at https://www.themoviedb.org/settings/api then paset it here.
+  // A production app would make a request to a backend server to get your API key. E.G: to a .env file stored on your server.
+
+  api: {
+    apiKey: '0764feff15f2d9ad932c8dc7a24a2147',
+    apiUrl: 'https://api.themoviedb.org/3/',
+  },
+};
+
+// Function to fetch API data
+
+async function getAPIData(endpoint) {
+  const API_KEY = global.api.apiKey;
+  const API_URL = global.api.apiUrl;
+
+  const response = await fetch(
+    `${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`
+  ); /* This could alternatively be placed above with the API URL variable, but it functions better here. */
+
+  if (!response.ok) {
+    console.log('Error: ' + response.statusText);
+    showSpinner();
+  } else {
+    hideSpinner();
+  }
+  const data = await response.json();
+
+  return data;
+}

@@ -1,16 +1,22 @@
 const global = {
   currentPage: window.location.pathname,
-};
 
-// Highlight active link
-function highlightActiveLink() {
-  const links = document.querySelectorAll('.nav-link');
-  links.forEach((link) => {
-    if (link.getAttribute('href') === global.currentPage) {
-      link.classList.add('active');
-    }
-  });
-} // As you can see, sometimes a foreach loop is simply easier than trying to attach an event listener to each element in an array.
+  search: {
+    term: '',
+    type: '',
+    page: 1,
+    totalPages: 1,
+  },
+
+  // In a production app, this key should not be stored in code. This is for demonstration purposes only.
+  // Register your free key at https://www.themoviedb.org/settings/api then paset it here.
+  // A production app would make a request to a backend server to get your API key. E.G: to a .env file stored on your server.
+
+  api: {
+    apiKey: '0764feff15f2d9ad932c8dc7a24a2147',
+    apiUrl: 'https://api.themoviedb.org/3/',
+  },
+};
 
 // Function to display Movie data on homepage
 async function displayMovieData() {
@@ -45,6 +51,41 @@ async function displayMovieData() {
 
     document.getElementById('popular-movies').appendChild(div);
   });
+}
+
+// Show search alert
+function showAlert(message, className) {
+  const alertEl = document.createElement('div');
+
+  // Add the custom css alert
+  alertEl.classList.add('alert', className);
+
+  // Append the alert div to a newly created text node
+  alertEl.appendChild(document.createTextNode(message));
+
+  // Append the text node to the relevant DOM element
+  document.querySelector('#alert').appendChild(alertEl);
+
+  // Set a timeout for the alert so it doesn't just stay there
+  setTimeout(() => alertEl.remove(), 3000);
+}
+
+// Search logic: Movies & Tv
+// queryString returns everything from the question mark onward in the page URL
+async function search() {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString); // Returns the individual params of the url
+
+  global.search.type = urlParams.get('type');
+  global.search.term = urlParams.get('search-term');
+  global.search.page = urlParams.get('pagination');
+
+  if (global.search.term !== '' && global.search.term !== null) {
+    const results = await searchAPIData();
+    console.log(results);
+  } else {
+    showAlert('Enter a search term');
+  }
 }
 
 // Homepage (movies) swiper display logic
@@ -116,6 +157,7 @@ async function displaySliderForShows() {
 }
 
 //Initialize swiper see - https://swiperjs.com/get-started
+
 function initSwiper() {
   const swiper = new Swiper('.swiper', {
     slidesPerView: 1,
@@ -363,12 +405,8 @@ async function displayBackgroundImage(type, backgroundPath) {
 
 // Function to fetch API data
 async function getAPIData(endpoint) {
-  // In a production app, this key should not be stored in code. This is for demonstration purposes only.
-  // Register your free key at https://www.themoviedb.org/settings/api then paset it here.
-  // A production app would make a request to a backend server to get your API key. E.G: to a .env file stored on your server.
-
-  const API_KEY = '0764feff15f2d9ad932c8dc7a24a2147';
-  const API_URL = `https://api.themoviedb.org/3/`;
+  const API_KEY = global.api.apiKey;
+  const API_URL = global.api.apiUrl;
 
   const response = await fetch(
     `${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`
@@ -383,6 +421,35 @@ async function getAPIData(endpoint) {
   const data = await response.json();
 
   return data;
+}
+
+//Make request to search API data
+async function searchAPIData() {
+  try {
+    const API_KEY = global.api.apiKey;
+    const API_URL = global.api.apiUrl;
+
+    showSpinner();
+
+    const response = await fetch(
+      `${API_URL}search/${global.search.type}?api_key=${API_KEY}&language=en-US&query=${global.search.term}`
+    );
+
+    // if (!response.ok) {
+    //   console.log('Error: ' + response.statusText);
+    //   showSpinner();
+    // } else {
+    //   hideSpinner();
+    // }
+
+    const data = await response.json();
+
+    hideSpinner();
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    showSpinner();
+  }
 }
 
 // Show the spinner
@@ -402,6 +469,16 @@ function addCommas(mum) {
   return mum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // This means to add a comma every three digits.
 }
 
+// Highlight active link
+function highlightActiveLink() {
+  const links = document.querySelectorAll('.nav-link');
+  links.forEach((link) => {
+    if (link.getAttribute('href') === global.currentPage) {
+      link.classList.add('active');
+    }
+  });
+} // As you can see, sometimes a foreach loop is simply easier than trying to attach an event listener to each element in an array.
+
 // Initialize App (runs on every page & pageload)
 function init() {
   switch (global.currentPage) {
@@ -418,6 +495,10 @@ function init() {
       break;
     case '/flixx-app/show-details.html':
       displayShowDetails();
+      break;
+    case '/flixx-app/search.html':
+      search();
+      console.log(global.currentPage);
       break;
 
     default:
