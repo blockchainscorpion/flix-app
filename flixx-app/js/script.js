@@ -1,3 +1,7 @@
+import { api } from './global.js';
+
+
+
 const global = {
   currentPage: window.location.pathname,
 
@@ -6,15 +10,6 @@ const global = {
     type: '',
     page: 1,
     totalPages: 1,
-  },
-
-  // In a production app, this key should not be stored in code. This is for demonstration purposes only.
-  // Register your free key at https://www.themoviedb.org/settings/api then paset it here.
-  // A production app would make a request to a backend server to get your API key. E.G: to a .env file stored on your server.
-
-  api: {
-    apiKey: '0764feff15f2d9ad932c8dc7a24a2147',
-    apiUrl: 'https://api.themoviedb.org/3/',
   },
 };
 
@@ -55,6 +50,7 @@ async function displayMovieData() {
 
 // Show search alert
 function showAlert(message, className) {
+  // New div to contain the custom alert message
   const alertEl = document.createElement('div');
 
   // Add the custom css alert
@@ -66,20 +62,26 @@ function showAlert(message, className) {
   // Append the text node to the relevant DOM element
   document.querySelector('#alert').appendChild(alertEl);
 
-  // Set a timeout for the alert so it doesn't just stay there
+  // Set a timeout for the alert so it doesn't just stay on the page
   setTimeout(() => alertEl.remove(), 3000);
 }
 
 // Search logic: Movies & Tv
 // queryString returns everything from the question mark onward in the page URL
 async function search() {
+  // The querystring is everything from the '?' onward in the browser url.
   const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString); // Returns the individual params of the url
 
+  // Returns the individual params of the url
+  const urlParams = new URLSearchParams(queryString);
+
+  // Defining the global search object-elements object-(global) element/s(search."")
+  // This then points the urlParams variable to the relevant element in the search.html doc
   global.search.type = urlParams.get('type');
   global.search.term = urlParams.get('search-term');
   global.search.page = urlParams.get('pagination');
 
+  // Setting the logic for implementing the custom alert (red alert box)
   if (global.search.term !== '' && global.search.term !== null) {
     const results = await searchAPIData();
     console.log(results);
@@ -405,11 +407,11 @@ async function displayBackgroundImage(type, backgroundPath) {
 
 // Function to fetch API data
 async function getAPIData(endpoint) {
-  const API_KEY = global.api.apiKey;
-  const API_URL = global.api.apiUrl;
+  // const API_KEY = api.apiData.apiKey;
+  // const API_URL = api.apiData.apiUrl;
 
   const response = await fetch(
-    `${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`
+    `${api.apiData.apiUrl}${endpoint}?api_key=${api.apiData.apiKey}&language=en-US`
   ); /* This could alternatively be placed above with the API URL variable, but it functions better here. */
 
   if (!response.ok) {
@@ -426,13 +428,10 @@ async function getAPIData(endpoint) {
 //Make request to search API data
 async function searchAPIData() {
   try {
-    const API_KEY = global.api.apiKey;
-    const API_URL = global.api.apiUrl;
-
     showSpinner();
 
     const response = await fetch(
-      `${API_URL}search/${global.search.type}?api_key=${API_KEY}&language=en-US&query=${global.search.term}`
+      `${api.apiData.apiUrl}search/${global.search.type}?api_key=${api.apiData.apiKey}&language=en-US&query=${global.search.term}`
     );
 
     // if (!response.ok) {

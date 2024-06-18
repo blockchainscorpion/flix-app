@@ -1,0 +1,29 @@
+{
+  "name": "flixx-app",
+  "version": "1.0.0",
+  "description": "Search for your favourite movies",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/blockchainscorpion/flix-app.git"
+  },
+  "keywords": [
+    "flixx"
+  ],
+  "author": "Ant",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/blockchainscorpion/flix-app/issues"
+  },
+  "homepage": "https://github.com/blockchainscorpion/flix-app#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
