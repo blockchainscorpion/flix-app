@@ -1,6 +1,4 @@
-import { api } from './global.js';
-
-
+import { api } from './api.js';
 
 const global = {
   currentPage: window.location.pathname,
@@ -433,13 +431,6 @@ async function searchAPIData() {
     const response = await fetch(
       `${api.apiData.apiUrl}search/${global.search.type}?api_key=${api.apiData.apiKey}&language=en-US&query=${global.search.term}`
     );
-
-    // if (!response.ok) {
-    //   console.log('Error: ' + response.statusText);
-    //   showSpinner();
-    // } else {
-    //   hideSpinner();
-    // }
 
     const data = await response.json();
 
