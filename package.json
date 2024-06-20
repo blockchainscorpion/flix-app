@@ -8,7 +8,6 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "jest",
     "build": "npm run build"
   },
   "repository": {
