@@ -525,21 +525,21 @@ function highlightActiveLink() {
 // Initialize App (runs on every page & pageload)
 function init() {
   switch (global.currentPage) {
-    case '/flixx-app/index.html':
+    case '/index.html':
       displaySlider();
       displayMovieData(); // Display Movie data
       break;
-    case '/flixx-app/shows.html':
+    case '/shows.html':
       displaySliderForShows();
       displayShowData(); // Display show Show data
       break;
-    case '/flixx-app/movie-details.html':
+    case '/movie-details.html':
       displayMovieDetails();
       break;
-    case '/flixx-app/show-details.html':
+    case '/show-details.html':
       displayShowDetails();
       break;
-    case '/flixx-app/search.html':
+    case '/search.html':
       search();
       console.log(global.currentPage);
       break;
