@@ -77,6 +77,7 @@ async function displaySearchResults(results) {
      * the title, and the release date.
      *  */
     div.innerHTML = `
+    
       <a href="${global.search.type}-details.html?id=${result.id}">
       ${
         result.poster_path
@@ -129,7 +130,7 @@ async function search() {
     // So, I need to de-structure the object and putt out the individual elements that I need to make the search page functional.
     const { results, totalPages, page } = await searchAPIData();
 
-    // Verify that there are actually results
+    // Verify that there are actually results - Throw an error msg if none found.
     if (results.length === 0) {
       showAlert('No results found');
       return;
