@@ -22,7 +22,7 @@ async function displayMovieData() {
 
     div.innerHTML = `<a href="movie-details.html?id=${movie.id}">
             ${
-              movie.poster_path
+              movie.poster_pathrgb(163, 102, 10)
                 ? `<img
               src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
               class="card-img-top"
@@ -47,7 +47,7 @@ async function displayMovieData() {
 }
 
 // Show search alert
-function showAlert(message, className) {
+function showAlert(message, className = 'error') {
   // New div to contain the custom alert message
   const alertEl = document.createElement('div');
 
@@ -64,6 +64,50 @@ function showAlert(message, className) {
   setTimeout(() => alertEl.remove(), 3000);
 }
 
+// Displaying the search results
+async function displaySearchResults(results) {
+  results.forEach((result) => {
+    const div = document.createElement('div');
+
+    div.classList.add('card');
+
+    /* The code snippet below dynamically creates a HTML structure to display data fetched from an API.
+     * It handles different key/value pairs based on the type of content (movie or TV show).
+     * The structure includes a link to a details page, an image (or a placeholder if no image is available),
+     * the title, and the release date.
+     *  */
+    div.innerHTML = `
+      <a href="${global.search.type}-details.html?id=${result.id}">
+      ${
+        result.poster_path
+          ? `<img src=
+      "https://image.tmdb.org/t/p/w500/${result.poster_path}"
+      class="card-img-top"
+        alt="${global.search.type === 'movie' ? result.title : result.name}"
+        />`
+          : `<img src=
+        "images/no-image.jpg" class="card-img-top" alt="${
+          global.search.type === 'movie' ? result.title : result.name
+        }"
+          />`
+      } </a>
+      <div class="card-body">
+        <h5 class="card-title">${
+          global.search.type === 'movie' ? result.title : result.name
+        }
+        </h5>
+        <p class="card-text">
+        <small class="text-muted">Release:
+        ${
+          global.search.type === 'movie'
+            ? result.release_date
+            : result.first_air_date
+        }</small>
+        </p>
+      </div>`;
+    document.getElementById('search-results').appendChild(div);
+  });
+}
 // Search logic: Movies & Tv
 // queryString returns everything from the question mark onward in the page URL
 async function search() {
@@ -81,10 +125,24 @@ async function search() {
 
   // Setting the logic for implementing the custom alert (red alert box)
   if (global.search.term !== '' && global.search.term !== null) {
-    const results = await searchAPIData();
-    console.log(results);
+    // The response from the API is an object that contains an array of results.
+    // So, I need to de-structure the object and putt out the individual elements that I need to make the search page functional.
+    const { results, totalPages, page } = await searchAPIData();
+
+    // Verify that there are actually results
+    if (results.length === 0) {
+      showAlert('No results found');
+      return;
+    }
+    // Display the search results if the lenght is > 0.
+    displaySearchResults(results);
+    console.log(results); // delete when no longer needed
+    document.getElementById('search-term').value = '';
+
+    // Display the custom error message when no search term is entered
   } else {
     showAlert('Enter a search term');
+    return;
   }
 }
 
@@ -426,19 +484,13 @@ async function getAPIData(endpoint) {
 //Make request to search API data
 async function searchAPIData() {
   try {
-    showSpinner();
-
     const response = await fetch(
       `${api.apiData.apiUrl}search/${global.search.type}?api_key=${api.apiData.apiKey}&language=en-US&query=${global.search.term}`
     );
-
     const data = await response.json();
-
-    hideSpinner();
     return data;
   } catch (error) {
     console.error('Error fetching data:', error);
-    showSpinner();
   }
 }
 
