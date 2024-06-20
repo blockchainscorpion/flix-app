@@ -8,7 +8,8 @@ export const api = {
   // A production app would make a request to a backend server to get your API key. E.G: to a .env file stored on your server.
 
   apiData: {
-    apiKey: '0764feff15f2d9ad932c8dc7a24a2147',
+    apiKey:
+      'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNzY0ZmVmZjE1ZjJkOWFkOTMyYzhkYzdhMjRhMjE0NyIsInN1YiI6IjY2NjE2OThhMWY0ZGFhYzk1YWYyOWQ4MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Ovt6gEYT2jgTbhaeiUZSrdLcApts-UgY9uChU2oqsQc',
     apiUrl: 'https://api.themoviedb.org/3/',
   },
 };
