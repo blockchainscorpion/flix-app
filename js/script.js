@@ -22,7 +22,7 @@ async function displayMovieData() {
 
     div.innerHTML = `<a href="movie-details.html?id=${movie.id}">
             ${
-              movie.poster_pathrgb(163, 102, 10)
+              movie.poster_path
                 ? `<img
               src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
               class="card-img-top"
