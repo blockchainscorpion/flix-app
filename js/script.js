@@ -7,7 +7,8 @@ const global = {
     term: '',
     type: '',
     page: 1,
-    totalPages: 1,
+    totalPages: 0,
+    totalResults: 0,
   },
 };
 
@@ -66,6 +67,9 @@ function showAlert(message, className = 'error') {
 
 // Displaying the search results
 async function displaySearchResults(results) {
+  
+
+  // Loop through the results, and display a given number of them on the screen (20)
   results.forEach((result) => {
     const div = document.createElement('div');
 
@@ -106,9 +110,61 @@ async function displaySearchResults(results) {
         }</small>
         </p>
       </div>`;
+
+    // Adding the reuslts tally to the page
+    document.getElementById('search-results-heading').innerHTML = `
+      <h2>${results.length} of ${global.search.totalResults} Results for ${global.search.term} </h2>`;
     document.getElementById('search-results').appendChild(div);
   });
+  // Calling the pagination buttons and text
+  displayPagination();
 }
+
+// Display Pagination on search
+async function displayPagination() {
+  const div = document.createElement('div');
+
+  div.classList.add('pagination');
+
+  div.innerHTML = `
+  <button class="btn btn-primary" id="prev">Prev</button>
+  <button class="btn btn-primary" id="next">Next</button>
+  <div class="page-counter">Page ${global.search.page} of ${global.search.totalPages}</div>
+  `;
+
+  document.getElementById('pagination').appendChild(div);
+
+  // Disable prev button if on first page || Disable next button if on last page
+  if (global.search.page === 1) {
+    document.getElementById('prev').disabled = true;
+  } else if (global.search.page === global.search.totalPages) {
+    document.getElementById('next').disabled = true;
+  }
+
+  // Listenting for the next button click - it needs to be asynchronous because i'm calling the api to go to the next page
+  document.getElementById('next').addEventListener('click', async () => {
+    // Clear out the previous results
+    document.getElementById('search-results').innerHTML = ``;
+    document.getElementById('search-results-heading').innerHTML = ``;
+    document.getElementById('pagination').innerHTML = ``;
+    // Make the api req
+    const { results, total_pages } = await searchAPIData();
+    // Increment the page
+    // global.search.page++;
+    
+
+    displaySearchResults(results, global.search.page++);
+  });
+
+  // Listenting for the prev button click - it needs to be asynchronous because i'm calling the api to go to the next page
+  document.getElementById('prev').addEventListener('click', async displaySearchResults => {
+    // Decrement the page
+    global.search.page--;
+  });
+}
+
+// Listening for the prev button click
+
 // Search logic: Movies & Tv
 // queryString returns everything from the question mark onward in the page URL
 async function search() {
@@ -128,7 +184,11 @@ async function search() {
   if (global.search.term !== '' && global.search.term !== null) {
     // The response from the API is an object that contains an array of results.
     // So, I need to de-structure the object and putt out the individual elements that I need to make the search page functional.
-    const { results, totalPages, page } = await searchAPIData();
+    const { results, total_pages, page, total_results } = await searchAPIData();
+
+    global.search.page = page;
+    global.search.totalPages = total_pages;
+    global.search.totalResults = total_results;
 
     // Verify that there are actually results - Throw an error msg if none found.
     if (results.length === 0) {
