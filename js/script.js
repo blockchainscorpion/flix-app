@@ -3,6 +3,7 @@ import { api } from './api.js';
 
 const global = {
   currentPage: window.location.pathname,
+  
 
   search: {
     term: '',
@@ -12,6 +13,7 @@ const global = {
     totalResults: 0,
   },
 };
+console.log(global.currentPage);
 
 // Function to display Movie data on homepage
 async function displayMovieData() {
