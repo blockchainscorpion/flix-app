@@ -1,4 +1,4 @@
-require('dotenv').config();
+// require('dotenv').config();
 
 export const api = {
   currentPage: window.location.pathname,
