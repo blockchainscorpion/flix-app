@@ -592,21 +592,21 @@ function init() {
   console.log('Current Page:', global.currentPage);
 
   switch (global.currentPage) {
-    case '/index.html':
+    case 'index.html':
       displaySlider();
       displayMovieData(); // Display Movie data
       break;
-    case '/shows.html':
+    case 'shows.html':
       displaySliderForShows();
       displayShowData(); // Display show Show data
       break;
-    case '/movie-details.html':
+    case 'movie-details.html':
       displayMovieDetails();
       break;
-    case '/show-details.html':
+    case 'show-details.html':
       displayShowDetails();
       break;
-    case '/search.html':
+    case 'search.html':
       search();
       console.log(global.currentPage);
       break;
