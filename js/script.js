@@ -1,3 +1,4 @@
+const API_KEY = import('dotenv').config();
 import { api } from './api.js';
 
 const global = {
@@ -47,7 +48,7 @@ async function displayMovieData() {
   });
 }
 
-// Show search alert
+// Show custom search alert
 function showAlert(message, className = 'error') {
   // New div to contain the custom alert message
   const alertEl = document.createElement('div');
@@ -67,8 +68,6 @@ function showAlert(message, className = 'error') {
 
 // Displaying the search results
 async function displaySearchResults(results) {
-  
-
   // Loop through the results, and display a given number of them on the screen (20)
   results.forEach((result) => {
     const div = document.createElement('div');
@@ -141,6 +140,8 @@ async function displayPagination() {
     document.getElementById('next').disabled = true;
   }
 
+  const next = document.getElementById('next');
+
   // Listenting for the next button click - it needs to be asynchronous because i'm calling the api to go to the next page
   document.getElementById('next').addEventListener('click', async () => {
     // Clear out the previous results
@@ -151,16 +152,17 @@ async function displayPagination() {
     const { results, total_pages } = await searchAPIData();
     // Increment the page
     // global.search.page++;
-    
 
     displaySearchResults(results, global.search.page++);
   });
 
   // Listenting for the prev button click - it needs to be asynchronous because i'm calling the api to go to the next page
-  document.getElementById('prev').addEventListener('click', async displaySearchResults => {
-    // Decrement the page
-    global.search.page--;
-  });
+  document
+    .getElementById('prev')
+    .addEventListener('click', async (displaySearchResults) => {
+      // Decrement the page
+      global.search.page--;
+    });
 }
 
 // Listening for the prev button click
@@ -524,11 +526,11 @@ async function displayBackgroundImage(type, backgroundPath) {
 
 // Function to fetch API data
 async function getAPIData(endpoint) {
-  // const API_KEY = api.apiData.apiKey;
+  const key = api.apiData.API_KEY;
   // const API_URL = api.apiData.apiUrl;
 
   const response = await fetch(
-    `${api.apiData.apiUrl}${endpoint}?api_key=${api.apiData.apiKey}&language=en-US`
+    `${api.apiData.apiUrl}${endpoint}?api_key=${key}&language=en-US`
   ); /* This could alternatively be placed above with the API URL variable, but it functions better here. */
 
   if (!response.ok) {
@@ -546,7 +548,7 @@ async function getAPIData(endpoint) {
 async function searchAPIData() {
   try {
     const response = await fetch(
-      `${api.apiData.apiUrl}search/${global.search.type}?api_key=${api.apiData.apiKey}&language=en-US&query=${global.search.term}`
+      `${api.apiData.apiUrl}search/${global.search.type}?api_key=${key}&language=en-US&query=${global.search.term}`
     );
     const data = await response.json();
     return data;

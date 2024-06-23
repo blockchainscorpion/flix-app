@@ -8,8 +8,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "jest",
-    "build": "echo 'No build step necessary'"
+    "test": "npm run-script",
+    "build": "netlify dev"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/blockchainscorpion/flix-app#readme",
   "dependencies": {
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "netlify": "^13.1.19"
   }
 }
