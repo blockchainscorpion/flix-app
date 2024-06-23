@@ -1,4 +1,4 @@
-const API_KEY = import('dotenv').config();
+// const API_KEY = import('dotenv').config();
 import { api } from './api.js';
 
 const global = {
@@ -526,11 +526,12 @@ async function displayBackgroundImage(type, backgroundPath) {
 
 // Function to fetch API data
 async function getAPIData(endpoint) {
-  const key = api.apiData.API_KEY;
+  // const key = api.apiData.API_KEY;
+  // console.log('Fetching data with API key:', key); 
   // const API_URL = api.apiData.apiUrl;
 
   const response = await fetch(
-    `${api.apiData.apiUrl}${endpoint}?api_key=${key}&language=en-US`
+    `${api.apiData.apiUrl}${endpoint}?api_key=${api.apiData.API_KEY}&language=en-US`
   ); /* This could alternatively be placed above with the API URL variable, but it functions better here. */
 
   if (!response.ok) {
@@ -548,7 +549,7 @@ async function getAPIData(endpoint) {
 async function searchAPIData() {
   try {
     const response = await fetch(
-      `${api.apiData.apiUrl}search/${global.search.type}?api_key=${key}&language=en-US&query=${global.search.term}`
+      `${api.apiData.apiUrl}search/${global.search.type}?api_key=${api.apiData.API_KEY}&language=en-US&query=${global.search.term}`
     );
     const data = await response.json();
     return data;

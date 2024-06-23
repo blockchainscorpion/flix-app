@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "npm run-script",
-    "build": "netlify dev"
+    "build": "webpack --config webpack.config.cjs"
   },
   "repository": {
     "type": "git",
@@ -27,5 +27,9 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "netlify": "^13.1.19"
+  },
+  "devDependencies": {
+    "webpack": "^5.92.1",
+    "webpack-cli": "^5.1.4"
   }
 }
