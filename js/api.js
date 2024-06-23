@@ -12,5 +12,5 @@ export const api = {
     apiUrl: 'https://api.themoviedb.org/3/',
   },
 };
-// apiKey: '0764feff15f2d9ad932c8dc7a24a2147';
+
 // apiKey: process.env.apiKey
