@@ -10,7 +10,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 module.exports = {
-  mode: 'development', // or 'production' as per environment
+  mode: 'production', // or 'production' as per environment
   entry: './js/script.js',
   output: {
     path: path.resolve('dist'),

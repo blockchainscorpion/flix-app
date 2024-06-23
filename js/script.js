@@ -609,7 +609,7 @@ function init() {
 
     default:
       'Nada';
-      console.log('nada' + error);
+      console.log('nada');
       break;
   }
 
