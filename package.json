@@ -8,8 +8,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "npm run-script",
-    "build": "webpack --config webpack.config.cjs"
+    "test": "npm run-build",
+    "build": "netlify"
   },
   "repository": {
     "type": "git",
