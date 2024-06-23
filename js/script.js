@@ -527,7 +527,7 @@ async function displayBackgroundImage(type, backgroundPath) {
 // Function to fetch API data
 async function getAPIData(endpoint) {
   // const key = api.apiData.API_KEY;
-  // console.log('Fetching data with API key:', key); 
+  // console.log('Fetching data with API key:', key);
   // const API_URL = api.apiData.apiUrl;
 
   const response = await fetch(
@@ -609,7 +609,7 @@ function init() {
 
     default:
       'Nada';
-      console.log('nada');
+      console.log('nada' + error);
       break;
   }
 
