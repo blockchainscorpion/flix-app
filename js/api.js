@@ -1,4 +1,4 @@
-// require('dotenv').config();
+require('dotenv').config();
 
 export const api = {
   currentPage: window.location.pathname,
@@ -12,6 +12,6 @@ export const api = {
     apiUrl: 'https://api.themoviedb.org/3/',
   },
 };
-// console.log('API Key:', api.apiData.API_KEY); 
+// console.log('API Key:', api.apiData.API_KEY);
 
 // apiKey: process.env.apiKey
