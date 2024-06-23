@@ -32,7 +32,7 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'api.apiData.API_KEY': JSON.stringify(process.env.API_KEY),
+      'process.env.API_KEY': JSON.stringify(process.env.API_KEY),
     }),
   ],
 };
