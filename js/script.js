@@ -22,7 +22,7 @@ async function displayMovieData() {
 
     div.classList.add('card');
 
-    div.innerHTML = `<a href="movie-details.html?id=${movie.id}">
+    div.innerHTML = `<a href="/movie-details.html?id=${movie.id}">
             ${
               movie.poster_path
                 ? `<img
@@ -587,6 +587,8 @@ function highlightActiveLink() {
 
 // Initialize App (runs on every page & pageload)
 function init() {
+  console.log('Current Page:', global.currentPage);
+
   switch (global.currentPage) {
     case '/index.html':
       displaySlider();
@@ -609,7 +611,7 @@ function init() {
 
     default:
       'Nada';
-      console.log('nada');
+      console.log('Current page not matched:', global.currentPage);
       break;
   }
 
