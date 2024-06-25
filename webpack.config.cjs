@@ -1,7 +1,3 @@
-// import webpack from 'webpack';
-// import path from 'path';
-// import dotenv from 'dotenv';
-
 const webpack = require('webpack');
 const path = require('path');
 const dotenv = require('dotenv');
