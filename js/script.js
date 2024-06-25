@@ -3,7 +3,6 @@ import { api } from './api.js';
 
 const global = {
   currentPage: window.location.pathname,
-  
 
   search: {
     term: '',
@@ -528,14 +527,10 @@ async function displayBackgroundImage(type, backgroundPath) {
 
 // Function to fetch API data
 async function getAPIData(endpoint) {
-  // const key = api.apiData.API_KEY;
-  // console.log('Fetching data with API key:', key);
-  // const API_URL = api.apiData.apiUrl;
-
   const response = await fetch(
     `${api.apiData.apiUrl}${endpoint}?api_key=${api.apiData.API_KEY}&language=en-US`
-  ); /* This could alternatively be placed above with the API URL variable, but it functions better here. */
-
+  );
+  
   if (!response.ok) {
     console.log('Error: ' + response.statusText);
     showSpinner();
@@ -585,10 +580,10 @@ function highlightActiveLink() {
       link.classList.add('active');
     }
   });
-} // As you can see, sometimes a foreach loop is simply easier than trying to attach an event listener to each element in an array.
+} // sometimes a foreach loop is simply easier than trying to attach an event listener to each element in an array.
 
 // Initialize App (runs on every page & pageload)
-function init() {
+async function init() {
   console.log('Current Page:', global.currentPage);
 
   switch (global.currentPage) {
