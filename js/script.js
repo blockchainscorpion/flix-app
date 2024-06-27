@@ -1,4 +1,3 @@
-// const API_KEY = import('dotenv').config();
 import { api } from './api.js';
 
 const global = {
@@ -7,7 +6,7 @@ const global = {
   search: {
     term: '',
     type: '',
-    page: 1,
+    page: 0,
     totalPages: 0,
     totalResults: 0,
   },
@@ -123,7 +122,6 @@ async function displaySearchResults(results) {
 // Display Pagination on search
 async function displayPagination() {
   const div = document.createElement('div');
-
   div.classList.add('pagination');
 
   div.innerHTML = `
@@ -142,31 +140,44 @@ async function displayPagination() {
   }
 
   const next = document.getElementById('next');
+  const prev = document.getElementById('prev');
 
   // Listenting for the next button click - it needs to be asynchronous because i'm calling the api to go to the next page
-  document.getElementById('next').addEventListener('click', async () => {
-    // Clear out the previous results
-    document.getElementById('search-results').innerHTML = ``;
-    document.getElementById('search-results-heading').innerHTML = ``;
-    document.getElementById('pagination').innerHTML = ``;
-    // Make the api req
-    const { results, total_pages } = await searchAPIData();
-    // Increment the page
-    // global.search.page++;
+  next.addEventListener('click', async () => {
+    if (global.search.page < global.search.totalPages) {
+      global.search.page++;
+      updateSearchResults();
+    }
 
-    displaySearchResults(results, global.search.page++);
+    // Make the api req
+    // const { results, total_pages } = await searchAPIData();
+    // Increment the page
+
+    // displaySearchResults(results, global.search.page++);
   });
 
   // Listenting for the prev button click - it needs to be asynchronous because i'm calling the api to go to the next page
-  document
-    .getElementById('prev')
-    .addEventListener('click', async (displaySearchResults) => {
-      // Decrement the page
+  prev.addEventListener('click', async () => {
+    // Decrement the page
+    if (global.search.page > 1) {
       global.search.page--;
-    });
+      updateSearchResults();
+    }
+  });
 }
 
-// Listening for the prev button click
+async function updateSearchResults() {
+  // Clear out the previous results
+  document.getElementById('search-results').innerHTML = ``;
+  document.getElementById('search-results-heading').innerHTML = ``;
+  document.getElementById('pagination').innerHTML = ``;
+
+  // Fetch new page data
+  const { results } = await searchAPIData();
+
+  // Display new results
+  displaySearchResults();
+}
 
 // Search logic: Movies & Tv
 // queryString returns everything from the question mark onward in the page URL
@@ -530,7 +541,7 @@ async function getAPIData(endpoint) {
   const response = await fetch(
     `${api.apiData.apiUrl}${endpoint}?api_key=${api.apiData.API_KEY}&language=en-US`
   );
-  
+
   if (!response.ok) {
     console.log('Error: ' + response.statusText);
     showSpinner();
@@ -546,12 +557,13 @@ async function getAPIData(endpoint) {
 async function searchAPIData() {
   try {
     const response = await fetch(
-      `${api.apiData.apiUrl}search/${global.search.type}?api_key=${api.apiData.API_KEY}&language=en-US&query=${global.search.term}`
+      `${api.apiData.apiUrl}search/${global.search.type}?api_key=${api.apiData.API_KEY}&language=en-US&query=${global.search.term}&page=${global.search.page}`
     );
     const data = await response.json();
     return data;
   } catch (error) {
     console.error('Error fetching data:', error);
+    showAlert('Error Fetching Data');
   }
 }
 
